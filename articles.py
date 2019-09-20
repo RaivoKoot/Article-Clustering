@@ -62,5 +62,20 @@ for word in wordFeatures:
 from sklearn.cluster import KMeans
 
 result = KMeans(n_clusters=4, n_init=50).fit(X)
-print(result.labels_)
-print(result.cluster_centers_)
+
+articles['label'] = result.labels_
+print(articles[['name', 'label']])
+
+# Calculate each data sample's distance to each centroid
+X_dist = result.transform(X)
+
+# Iteratively show a bar chart of x=sample, y=distance for each centroid
+for centroid in range(len(X_dist[0])):
+    distances = []
+    for rowIndex in range(len(X_dist)):
+        distances.append(X_dist[rowIndex][centroid])
+
+    plt.figure(figsize=(16,10))
+    plt.bar(articles['name'], distances)
+    plt.title("Distance of each Article from Cluster Centroid #" + str(centroid))
+    plt.show()
