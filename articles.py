@@ -62,5 +62,10 @@ for word in wordFeatures:
 from sklearn.cluster import KMeans
 
 result = KMeans(n_clusters=4, n_init=50).fit(X)
-print(result.labels_)
 print(result.cluster_centers_)
+
+articles['label'] = result.labels_
+print(articles[['name', 'label']])
+
+X_dist = result.transform(X)**2
+print(X_dist)
